@@ -2,15 +2,12 @@ use std::fmt::Display;
 
 fn to_letter_grade(num: u8) -> String {
     match num {
-        90..=100 => String::from("AA"),
-        80..=89 => "BA".to_string(),
-        70..=79 => "BB".to_string(),
-        60..=69 => "CB".to_string(),
-        50..=59 => "CC".to_string(),
-        40..=49 => "DC".to_string(),
-        33..=39 => "DD".to_string(),
-        0..=32 => "FF".to_string(),
-        _ => "FF".to_string(),
+        0..=59 => "FF".to_string(),
+        60..=69 => "DD".to_string(),
+        70..=79 => "CC".to_string(),
+        80..=89 => "BB".to_string(),
+        90..=100 => "AA".to_string(),
+        _ => "Out of Scope".to_string(),
     }
 }
 
@@ -34,25 +31,28 @@ enum Gender {
     Male,
     Female,
 }
-impl Display for Gender {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Gender::Male => write!(f, "Male"),
-            Gender::Female => write!(f, "Female"),
-        }
-    }
-}
+
 struct Person {
     name: String,
     age: u8,
     gender: Gender,
 }
 
-// impl Display for Person {
-//     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-//         write!(f, "{}, {}, {}", self.name, self.age, self.gender)
-//     }
-// }
+impl Display for Gender {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        match *self {
+            Gender::Male => write!(f, "Male"),
+            Gender::Female => write!(f, "Female"),
+        }
+    }
+}
+
+impl Display for Person {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{} , {} , {}", self.name, self.age, self.gender)
+    }
+}
+
 
 macro_rules! display {
     ($struct_name:ty, $format_string:literal, $($fields:ident),+ $(,)?) => {
@@ -72,18 +72,18 @@ fn main() {
     log(LogLevel::Warn, "This is a warn message");
     log(LogLevel::Error, "This is an error message");
 
-    let pm = Person {
-        name: String::from("John"),
-        age: 40,
+    let person1 = Person {
+        name: String::from("arda"),
+        age: 18,
         gender: Gender::Male,
     };
 
-    let pw = Person {
-        name: String::from("Ayşe"),
-        age: 40,
+    let person2 = Person {
+        name: String::from("hello"),
+        age: 22,
         gender: Gender::Female,
     };
 
-    println!("{pm}");
-    println!("{pw}");
+    println!("{person1}");
+    println!("{person2}");
 }
